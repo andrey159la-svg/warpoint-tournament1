@@ -1,0 +1,839 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #0d0d14;
+  --surface2: #13131f;
+  --border: #2a1a2a;
+  --accent: #ff0033;
+  --accent-glow: #ff0033;
+  --accent2: #ff3366;
+  --accent3: #00ff88;
+  --text: #e8e8f0;
+  --text-dim: #8a8a9a;
+  --gold: #ffc840;
+  --danger: #ff2244;
+  --winner: #00ff88;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Rajdhani", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Шрифты */
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap");
+
+/* Пульсирующий неон */
+@keyframes neonPulse {
+  0% {
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+    box-shadow: 0 0 5px rgba(255, 0, 51, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent),
+      0 0 40px var(--accent);
+    box-shadow: 0 0 20px rgba(255, 0, 51, 0.6);
+  }
+  100% {
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+    box-shadow: 0 0 5px rgba(255, 0, 51, 0.3);
+  }
+}
+
+@keyframes statusBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Анимация для кнопок */
+.btn-primary,
+.active-tab,
+.status-dot {
+  animation: neonPulse 2s infinite;
+}
+
+/* Основные стили */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Хедер */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 20px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, #0a0a0f 0%, #1a0a1a 50%, #0a0a0f 100%);
+}
+
+.logo {
+  font-family: "Orbitron", monospace;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+  animation: neonPulse 2s infinite;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.logo-sub {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 11px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent3);
+}
+
+.role-badge {
+  background: rgba(255, 0, 51, 0.2);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 10px;
+  border-radius: 3px;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 34, 68, 0.1);
+}
+
+/* Нижняя навигация для мобильных */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 10px 20px;
+  justify-content: space-around;
+  z-index: 100;
+}
+
+.bottom-nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.bottom-nav-btn.active {
+  color: var(--accent);
+  background: rgba(255, 0, 51, 0.1);
+}
+
+/* Верхняя навигация для десктопа */
+.top-nav {
+  display: flex;
+  padding: 0 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  gap: 2px;
+}
+
+.tab {
+  padding: 14px 28px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  border: none;
+  background: none;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  color: var(--accent);
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* Мейн контент */
+.main {
+  flex: 1;
+  padding: 24px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 80px;
+}
+
+/* Секции */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-family: "Orbitron", monospace;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+.section-head .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* Карточки команд */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  transition: all 0.2s;
+  border-radius: 8px;
+}
+
+.team-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.team-name {
+  font-family: "Orbitron", monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 8px 8px;
+  border-radius: 4px;
+}
+
+.player-row.captain {
+  background: rgba(255, 0, 51, 0.08);
+  border-left: 2px solid var(--accent);
+}
+
+.player-badge {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+.badge-cap {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.badge-player {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge-reserve {
+  color: var(--text-dim);
+  border-color: var(--border);
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-nick {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.player-fio {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-sm {
+  flex: 1;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 1px solid;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  color: var(--accent);
+  border-color: rgba(255, 0, 51, 0.3);
+}
+
+.btn-edit:hover {
+  background: rgba(255, 0, 51, 0.1);
+}
+
+.btn-del {
+  color: var(--danger);
+  border-color: rgba(255, 34, 68, 0.3);
+}
+
+.btn-del:hover {
+  background: rgba(255, 34, 68, 0.1);
+}
+
+/* Кнопки */
+.btn {
+  padding: 12px 28px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: rgba(255, 0, 51, 0.1);
+  box-shadow: 0 0 15px rgba(255, 0, 51, 0.3);
+}
+
+.btn-danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn-danger:hover {
+  background: rgba(255, 34, 68, 0.1);
+}
+
+.btn-ghost {
+  color: var(--text-dim);
+  border-color: var(--border);
+}
+
+/* Панели */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  font-family: "Orbitron", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+input,
+textarea {
+  width: 100%;
+  background: #0a0a12;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: "Rajdhani", sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  outline: none;
+  border-radius: 4px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 0, 51, 0.2);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Модалки */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  position: relative;
+}
+
+.modal-full {
+  width: 95%;
+  max-width: 1400px;
+  height: 90vh;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+}
+
+.modal-title {
+  font-family: "Orbitron", monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Блоки игроков */
+.player-block {
+  background: #0a0a12;
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.player-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.player-label {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+/* Пустое состояние */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+  font-family: "Share Tech Mono", monospace;
+}
+
+/* Алёрты */
+.alert {
+  padding: 12px 16px;
+  border-left: 3px solid var(--accent2);
+  background: rgba(255, 60, 0, 0.06);
+  font-size: 13px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Турнирная сетка */
+.bracket-container {
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.bracket {
+  display: flex;
+  gap: 40px;
+  min-width: max-content;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 260px;
+}
+
+.round-title {
+  font-family: "Orbitron", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--accent);
+  padding: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.match {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.match.completed {
+  border-color: var(--winner);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+.match-team {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+}
+
+.match-team:last-child {
+  border-bottom: none;
+}
+
+.match-team.winner {
+  background: rgba(0, 255, 136, 0.1);
+  border-left: 3px solid var(--winner);
+}
+
+.match-team.tbd {
+  opacity: 0.5;
+}
+
+.team-score-input {
+  width: 55px;
+  background: #0a0a12;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+/* Выбор формата сетки */
+.bracket-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.bracket-option {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.bracket-option:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.bracket-option.selected {
+  border-color: var(--accent);
+  background: rgba(255, 0, 51, 0.08);
+  box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
+}
+
+.option-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.option-name {
+  font-family: "Orbitron", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.option-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Круговая таблица */
+.rr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 12px;
+}
+
+.rr-table th {
+  background: var(--surface2);
+  color: var(--accent);
+  padding: 10px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.rr-table td {
+  padding: 8px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.rr-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.rr-table .self {
+  background: #0a0a12;
+  color: var(--text-dim);
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .logo {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .logo-sub {
+    font-size: 7px;
+  }
+
+  .status-bar {
+    gap: 8px;
+    font-size: 9px;
+  }
+
+  .top-nav {
+    display: none;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .main {
+    padding: 16px;
+    padding-bottom: 70px;
+  }
+
+  .teams-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .team-card {
+    padding: 16px;
+  }
+
+  .section-head h2 {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 11px;
+  }
+
+  .modal {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .bracket {
+    gap: 20px;
+  }
+
+  .round {
+    min-width: 220px;
+  }
+
+  .match-team {
+    padding: 10px 12px;
+  }
+
+  .team-score-input {
+    width: 45px;
+    font-size: 12px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+
+  .bracket-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Десктоп навигация */
+@media (min-width: 769px) {
+  .bottom-nav {
+    display: none;
+  }
+}
